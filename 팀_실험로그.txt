@@ -13,7 +13,6 @@ team_base_n = pub 9.32, pri 10.37, val 12.5
 train['is_holiday'] = train['일시'].dt.strftime('%m-%d').isin(['06-06', '08-15']).astype(int)
 train['is_holiday'] = ((train['is_holiday'] == 1) | (train['dayofweek'] >= 5)).astype(int)
 
-*03/11: 20:38 아직 team_base, team_base_n 미제출 상태. 내일 제출할 예정
 
 추후 코드에서 
 체감온도 코드만 넣은 것 1개.
@@ -40,3 +39,4 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
