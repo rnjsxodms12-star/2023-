@@ -1,0 +1,41 @@
+base.ipynb파일은 맨 처음에 만들었던 파이프라인 코드. 
+baseline: pub 9.04, pri 10.8, val ?.??
+Team_base.ipynb파일부터는 baseline 기반에서 추후 하나씩 피쳐 추가하는 것.
+
+결측치: 강수량, 일사,일조량은 = 0, 풍속 습도 기온 = [선형보간 고정]
+
+team_base: pub ?.??, pri ?.??, val 13.3 
+(결측치: 강수량, 일사,일조량은 = 0, 풍속 습도 기온 = [선형보간 고정]
+val timesplit & fold+smape 추가
+
+team_base_n = pub ?.??, pri ?.??, val 12.5
+# train['is_holiday'] = train['일시'].dt.strftime('%m-%d').isin(['06-06'])
+train['is_holiday'] = train['일시'].dt.strftime('%m-%d').isin(['06-06', '08-15']).astype(int)
+train['is_holiday'] = ((train['is_holiday'] == 1) | (train['dayofweek'] >= 5)).astype(int)
+
+*03/11: 20:38 아직 team_base, team_base_n 미제출 상태. 내일 제출할 예정
+
+추후 코드에서 
+체감온도 코드만 넣은 것 1개.
+
+#building_info = pd.read_csv('data/building_info.csv')
+# 2. '건물번호'를 기준으로 train과 test 데이터에 건물 정보 병합
+#train = pd.merge(train, building_info, on='건물번호', how='left')
+#test = pd.merge(test, building_info, on='건물번호', how='left')
+만 추가한 것 1개.
+
+그리고 체감온도코드+ building_info = pd.read_csv('data/building_info.csv')
+를 넣은 것 1개
+
+이렇게 ?개 내일 진행할 것.
+
+Team_base.ipynb파일부터는 baseline 기반에서 추후 하나씩 피쳐 추가하는 것.
+위의 3개 진행된 이후, 최대기온, 평균기온을 언제, 어떻게 추가할지는 미정.
+
+** time 스플릿으로 (none)
+train_inner
+2022-06-01 ~ 2022-08-10
+
+valid
+2022-08-11 ~ 2022-08-24
+이런 구조로 만들기는 해야 함.

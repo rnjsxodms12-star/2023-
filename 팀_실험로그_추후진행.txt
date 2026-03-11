@@ -1,0 +1,38 @@
+baseline: pub 9.04, pri 10.8, val ?.??
+features = [ '건물번호', '기온(C)', '강수량(mm)', '풍속(m/s)', '습도(%)', 'DI', 'month', 'day', 'hour', 'dayofweek', 'is_holiday' # is_weekend 없음
+
+team_base: pub ?.??, pri ?.??, val 13.3 
+(결측치: 강수량, 일사,일조량은 = 0, 풍속 습도 기온 = [선형보간 고정]
+val timesplit & fold+smape 추가
+
+team_base_n = pub ?.??, pri ?.??, val 12.5
+# train['is_holiday'] = train['일시'].dt.strftime('%m-%d').isin(['06-06'])
+train['is_holiday'] = train['일시'].dt.strftime('%m-%d').isin(['06-06', '08-15']).astype(int)
+train['is_holiday'] = ((train['is_holiday'] == 1) | (train['dayofweek'] >= 5)).astype(int)
+
+*03/11: 20:38 아직 team_base, team_base_n 미제출 상태. 내일 제출할 예정
+
+team_ex1 = 체감온도코드만 넣은 것 1개.
+
+team_ex2 = building_info만 추가한 것 1개.
+
+team_ex3 = 체감온도코드 + building_info 추가한 것.
+
+team_ex4 = ?
+
+team_ex? = + + + 시간 변수의 주기성 인코딩
+
+team_ex? = + + + + + + + + + 
+기존 건물 데이터를 (건물번호,평균전력) 데이터를 조사해서 
+4~5가지로 분류 시킨 후,
+건물 별로 하나하나 수동으로.
+(건물번호 → 건물타입으로 매핑)
+건물별로 타입 부여, 카테고리로 인식 시키기.  
+
+* time 스플릿으로 (none)
+train_inner
+2022-06-01 ~ 2022-08-10
+
+valid
+2022-08-11 ~ 2022-08-24
+이런 구조로 만들기는 해야 함.
