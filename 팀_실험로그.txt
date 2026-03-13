@@ -118,7 +118,9 @@ valid
 
 이런 구조로 만들기는 해야 함.
 
-
+-아래는 필요하면 꺼내서 쓴다-
+#model.feature_importances_    
+#xgb.plot_importance(model)
 
 
 
