@@ -70,12 +70,22 @@ team_ex5 = pub ?.??, pri ?.??, val 10.58
 team_ex4에 'AT' 추가. 체감온도코드 + building_info 추가한 것.
 
 
-* 지금 ex6, ex7은 진행된 상태가 아닙니다.
+team_ex6 = pub ?.??, pri ?.??, val 10.61
+team_ex5에 평균기온, 최대기온 추가
+for df in [train, test]:
+    df['date'] = df['일시'].dt.date 
 
+    # 건물별 + 날짜별로 그룹화하여 평균, 최대 계산
+    df['평균기온'] = df.groupby(['건물번호', 'date'])['기온(C)'].transform('mean')
+    df['최대기온'] = df.groupby(['건물번호', 'date'])['기온(C)'].transform('max')
 
-team_ex6 = team_ex5에 평균기온, 최대기온 추가
+    # 사용 후 date 컬럼 제거 (선택 사항)
+    df.drop(columns=['date'], inplace=True)
+'평균기온', '최대기온'
 
-team_ex7 = team_ex3에 평균기온, 최대기온 추가
+team_ex7 = pub ?.??, pri ?.??, val 12.18
+team_ex3에 평균기온, 최대기온 추가
+
 
 team_ex8...? = 주말변수 추가 
 train['is_weekend'] = (train['dayofweek'] >= 5).astype(int)
@@ -107,6 +117,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
