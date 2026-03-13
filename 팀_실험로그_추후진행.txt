@@ -63,7 +63,7 @@ for col in categorical_cols:
 
 *** 분기점: 첫 파이프라인 점수 뚫은 .ipynb = team_ex4 ***
 
-team_ex5 = pub ?.??, pri ?.??, val 10.58
+team_ex5 = pub 8.49, pri 9.67, val 10.58
 team_ex4에 'AT' 추가. 체감온도코드 + building_info 추가한 것.
 
 
