@@ -109,6 +109,9 @@ test['hour_cos'] = np.cos(2*np.pi*test['hour']/24)
 team_ex10 = 임시 휴무(할인마트 등)로 추측되는 데이터는 제거 (drop)
 
 
+---약속된 공통사항이 끝나는 시점---
+
+
 이렇게 ?개 내일 진행할 것.
 
 Team_base.ipynb파일부터는 baseline 기반에서 추후 하나씩 피쳐 추가하는 것.
