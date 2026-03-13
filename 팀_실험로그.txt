@@ -37,7 +37,6 @@ features = [
     'month', 'day', 'hour', 'dayofweek', 'is_holiday'
 ]
 
-아직 ex2 수정된 상태가 아님 building_info.csv 미완.
 
 * Error found 
 team_ex2 = pub 9.21, pri 10.12, val 12.41
@@ -78,6 +77,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
