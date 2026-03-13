@@ -64,8 +64,24 @@ for col in categorical_cols:
 '건물유형', '연면적(m2)', '냉방면적(m2)', '태양광용량(kW)', 'ESS저장용량(kWh)', 'PCS용량(kW)' 추가 <-- 'AT'제거된 상태
 # model 정의 model = ... 아래의 n_jobs=-1 아래에 ,enable_categorical=True 추가
 
+*** 분기점: 첫 파이프라인 점수 뚫은 .ipynb = team_ex4 ***
+
 team_ex5 = pub ?.??, pri ?.??, val 10.58
 team_ex4에 'AT' 추가. 체감온도코드 + building_info 추가한 것.
+
+team_ex6 = team_ex5에 평균기온, 최대기온 추가
+
+team_ex7 = team_ex3에 평균기온, 최대기온 추가
+
+team_ex8...? = 주말 변수 추가
+
+
+team_ex? = 시간 주기성
+train['hour_sin'] = np.sin(2*np.pi*train['hour']/24)
+train['hour_cos'] = np.cos(2*np.pi*train['hour']/24)
+
+test['hour_sin'] = np.sin(2*np.pi*test['hour']/24)
+test['hour_cos'] = np.cos(2*np.pi*test['hour']/24)
 
 
 이렇게 ?개 내일 진행할 것.
@@ -81,6 +97,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
