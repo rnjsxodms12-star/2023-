@@ -64,11 +64,9 @@ for col in categorical_cols:
 '건물유형', '연면적(m2)', '냉방면적(m2)', '태양광용량(kW)', 'ESS저장용량(kWh)', 'PCS용량(kW)' 추가 <-- 'AT'제거된 상태
 # model 정의 model = ... 아래의 n_jobs=-1 아래에 ,enable_categorical=True 추가
 
-team_ex5 = 체감온도코드 + building_info 추가한 것.
+team_ex5 = pub ?.??, pri ?.??, val 10.58
+team_ex4에 'AT' 추가. 체감온도코드 + building_info 추가한 것.
 
-
-그리고 체감온도코드+ building_info = pd.read_csv('data/building_info.csv')
-를 넣은 것 1개
 
 이렇게 ?개 내일 진행할 것.
 
@@ -83,6 +81,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
