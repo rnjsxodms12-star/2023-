@@ -73,7 +73,11 @@ team_ex6 = team_ex5에 평균기온, 최대기온 추가
 
 team_ex7 = team_ex3에 평균기온, 최대기온 추가
 
-team_ex8...? = 주말 변수 추가
+team_ex8...? = 주말변수 추가 
+train['is_weekend'] = (train['dayofweek'] >= 5).astype(int)
+test['is_weekend'] = (test['dayofweek'] >= 5).astype(int)
+'is_weekend'
+
 
 
 team_ex? = 시간 주기성
@@ -97,6 +101,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
