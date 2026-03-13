@@ -83,7 +83,7 @@ for df in [train, test]:
     df.drop(columns=['date'], inplace=True)
 '평균기온', '최대기온'
 
-team_ex7 = pub ?.??, pri ?.??, val 12.18
+team_ex7 = pub 9.65, pri 10.73, val 12.18
 team_ex3에 평균기온, 최대기온 추가
 
 
