@@ -88,6 +88,8 @@ test['hour_sin'] = np.sin(2*np.pi*test['hour']/24)
 test['hour_cos'] = np.cos(2*np.pi*test['hour']/24)
 
 
+
+
 이렇게 ?개 내일 진행할 것.
 
 Team_base.ipynb파일부터는 baseline 기반에서 추후 하나씩 피쳐 추가하는 것.
@@ -101,6 +103,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
