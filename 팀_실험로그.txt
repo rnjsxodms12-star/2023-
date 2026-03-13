@@ -92,7 +92,8 @@ team_ex3에 평균기온, 최대기온 추가
 시점에나 제외하는 것으로 한다.
 
 
-team_ex8 = ex6에 주말변수 추가 
+team_ex8 = pub ?.??, pri ?.??, val 10.61
+ex6에 주말변수 추가 
 train['is_weekend'] = (train['dayofweek'] >= 5).astype(int)
 test['is_weekend'] = (test['dayofweek'] >= 5).astype(int)
 'is_weekend'
