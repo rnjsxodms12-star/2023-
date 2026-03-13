@@ -49,16 +49,23 @@ test 풍속 습도 기온 선형보간 처리 추가, train에서 6월1일 공�
 team_ex3 = pub 9.25, pri 10.20, val 12.22
 체감온도만 추가한 것 1개.
 
-team_ex4 = building_info만 추가한 것 1개.
+team_ex4 = pub 8.58, pri 9.75, val 10.68
+# 1. 건물 정보 데이터 로드
+building_info = pd.read_csv('data/building_info.csv')
+# 2. '건물번호'를 기준으로 train과 test 데이터에 건물 정보 병합
+train = pd.merge(train, building_info, on='건물번호', how='left')
+test = pd.merge(test, building_info, on='건물번호', how='left')
+
+categorical_cols = train.select_dtypes(include=['object']).columns
+for col in categorical_cols:
+    train[col] = train[col].astype('category')
+    test[col] = test[col].astype('category')
+
+'건물유형', '연면적(m2)', '냉방면적(m2)', '태양광용량(kW)', 'ESS저장용량(kWh)', 'PCS용량(kW)' 추가 <-- 'AT'제거된 상태
+# model 정의 model = ... 아래의 n_jobs=-1 아래에 ,enable_categorical=True 추가
 
 team_ex5 = 체감온도코드 + building_info 추가한 것.
 
-
-#building_info = pd.read_csv('data/building_info.csv')
-# 2. '건물번호'를 기준으로 train과 test 데이터에 건물 정보 병합
-#train = pd.merge(train, building_info, on='건물번호', how='left')
-#test = pd.merge(test, building_info, on='건물번호', how='left')
-만 추가한 것 1개.
 
 그리고 체감온도코드+ building_info = pd.read_csv('data/building_info.csv')
 를 넣은 것 1개
@@ -76,6 +83,7 @@ valid
 2022-08-11 ~ 2022-08-24
 
 이런 구조로 만들기는 해야 함.
+
 
 
 
