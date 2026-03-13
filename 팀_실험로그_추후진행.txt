@@ -89,14 +89,14 @@ team_ex3에 평균기온, 최대기온 추가
 시점에나 제외하는 것으로 한다.
 
 
-team_ex8...? = 주말변수 추가 
+team_ex8 = ex6에 주말변수 추가 
 train['is_weekend'] = (train['dayofweek'] >= 5).astype(int)
 test['is_weekend'] = (test['dayofweek'] >= 5).astype(int)
 'is_weekend'
 
 
 
-team_ex? = 시간 주기성
+team_ex9 = 시간 주기성
 train['hour_sin'] = np.sin(2*np.pi*train['hour']/24)
 train['hour_cos'] = np.cos(2*np.pi*train['hour']/24)
 
@@ -105,7 +105,7 @@ test['hour_cos'] = np.cos(2*np.pi*test['hour']/24)
 
 
 
-team_ex? = 임시 휴무(할인마트 등)로 추측되는 데이터는 제거 (drop)
+team_ex10 = 임시 휴무(할인마트 등)로 추측되는 데이터는 제거 (drop)
 
 team_ex? = + + + + + + + + + 
 기존 건물 데이터를 (건물번호,평균전력) 데이터를 조사해서 
