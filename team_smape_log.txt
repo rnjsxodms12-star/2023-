@@ -124,6 +124,8 @@ Fold 5 SMAPE: 9.0830
 ✨ 교차 검증 완료! 평균 Val SMAPE: 12.1847
 🏁 제출 파일(team_ex7.csv)이 생성되었습니다!
 
+team_ex8
+
 
 
 
