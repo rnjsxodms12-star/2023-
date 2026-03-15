@@ -89,7 +89,7 @@ team_ex3에 평균기온, 최대기온 추가
 시점에나 제외하는 것으로 한다.
 
 
-team_ex8 = pub ?.??, pri ?.??, val 10.61 
+team_ex8 = pub 8.71, pri 9.73, val 10.61 
 ex6에 주말변수 추가 
 train['is_weekend'] = (train['dayofweek'] >= 5).astype(int)
 test['is_weekend'] = (test['dayofweek'] >= 5).astype(int)
@@ -97,7 +97,7 @@ test['is_weekend'] = (test['dayofweek'] >= 5).astype(int)
 
 
 
-team_ex9 = pub ?.??, pri ?.??, val 10.61 
+team_ex9 = pub 8.30, pri 9.28, val 10.61 
 시간 주기성
 train['hour_sin'] = np.sin(2*np.pi*train['hour']/24)
 train['hour_cos'] = np.cos(2*np.pi*train['hour']/24)
