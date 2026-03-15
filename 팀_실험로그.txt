@@ -107,7 +107,48 @@ train['hour_cos'] = np.cos(2*np.pi*train['hour']/24)
 test['hour_sin'] = np.sin(2*np.pi*test['hour']/24)
 test['hour_cos'] = np.cos(2*np.pi*test['hour']/24)
 
-team_ex10 = 임시 휴무(할인마트 등)로 추측되는 데이터는 제거 (drop)
+
+team_ex10 = pub 8.35 , pri 9.20, val 10.04
+임시 휴무(할인마트 등)로 추측되는 데이터는 제거 (drop)
+# =========================================================================
+# [추가] team_ex10: 임시 휴무일 통계적 Drop 로직
+# =========================================================================
+print(f"🧹 임시 휴무 Drop 전 Train 크기: {train.shape}")
+
+# 1. 계산을 위해 date 컬럼 임시 생성
+train['date'] = train['일시'].dt.date
+
+# 2. 건물별 + 일별 '총 전력소비량' 계산
+daily_power = train.groupby(['건물번호', 'date'])['전력소비량(kWh)'].sum().reset_index()
+daily_power.rename(columns={'전력소비량(kWh)': '일별총전력'}, inplace=True)
+
+# 3. 건물별 하루 전력소비량의 '중앙값(평소 전력량)' 계산 (평균보다 이상치에 강함)
+building_median = daily_power.groupby('건물번호')['일별총전력'].median().reset_index()
+building_median.rename(columns={'일별총전력': '건물평소전력'}, inplace=True)
+
+# 4. 데이터 병합 및 비율 계산
+daily_power = pd.merge(daily_power, building_median, on='건물번호')
+daily_power['전력비율'] = daily_power['일별총전력'] / daily_power['건물평소전력']
+
+# 5. Drop 기준: 평소 전력량의 30% (0.3) 이하만 쓴 날을 '휴무'로 간주
+# (이 0.3 이라는 수치는 실험을 통해 0.2 나 0.4 로 조절 가능합니다)
+closed_days = daily_power[daily_power['전력비율'] < 0.3][['건물번호', 'date']]
+closed_days['is_closed'] = 1
+
+# 6. 원본 train 데이터에 휴무일 정보 매핑
+train = pd.merge(train, closed_days, on=['건물번호', 'date'], how='left')
+train['is_closed'] = train['is_closed'].fillna(0)
+
+# 7. 휴무일(1)인 행을 Drop 하고 정상(0)인 행만 남김
+train = train[train['is_closed'] == 0].reset_index(drop=True)
+
+# 8. 임시로 만든 컬럼들 청소
+train.drop(columns=['is_closed', 'date'], inplace=True)
+
+print(f"✨ 임시 휴무 Drop 후 Train 크기: {train.shape}")
+# =========================================================================
+
+
 
 
 ---약속된 공통사항이 끝나는 시점---
