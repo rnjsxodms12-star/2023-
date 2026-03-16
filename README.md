@@ -285,8 +285,8 @@ Best → **5 clusters**
 | Public   | Private  | Validation |
 | -------- | -------- | ---------- |
 | **7.99** | **8.46** | **9.17**   |
-
 ---
+**Best performing pipeline: `team_ex15`**
 ## 📈 Performance Trend
 
 ![Experiment Score Progression](./score_progression.png)
