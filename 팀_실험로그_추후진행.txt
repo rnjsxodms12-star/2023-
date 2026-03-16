@@ -221,7 +221,8 @@ kmeans = KMeans(n_clusters=6, random_state=42, n_init=10)
 
 
 ------------- team_ex13에서 클러스터 5 기준으로 진행-------
-team_ex15 = ?
+
+team_ex15 = pub ?.??, pri ?.??, val 9.17
 team_ex13에서 피쳐 부분의  'day' 제거
 
 
