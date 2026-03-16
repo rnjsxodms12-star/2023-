@@ -291,6 +291,14 @@ Best → **5 clusters**
 
 ![Experiment Score Progression](./score_progression.png)
 
+-건물 메타데이터 활용: 건물 정보(연면적, 유형 등) 피처 추가가 전체 과정 중 가장 큰 폭의 성능 개선을 이끌어냈습니다.
+
+-시간 주기성 인코딩: 시간 데이터에 순환 인코딩(Cyclic Encoding)을 적용하여 시간적 흐름에 대한 모델의 표현력을 높였습니다.
+
+-건물 사용 패턴 클러스터링: 전력 사용 성향에 따른 클러스터링 변수를 생성하여 모델의 일반화 성능을 유의미하게 향상시켰습니다.
+
+-노이즈 피처 제거: 과적합(Overfitting)을 유발하는 특정 시간 피처를 제거함으로써 모델의 안정성을 확보했습니다.
+
 # 🔍 Exploratory Data Analysis
 
 ## Power Distribution
