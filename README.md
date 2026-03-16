@@ -335,7 +335,7 @@ building_cluster
 ```
 
 ---
-# Feature Importance
+# 📊 Feature Importance
 
 ![importance](feature_importance.png)
 # 🔮 Future Work
