@@ -286,7 +286,9 @@ Best → **5 clusters**
 | **7.99** | **8.46** | **9.17**   |
 
 ---
+## 📈 Performance Trend
 
+![Experiment Score Progression](./score_progression.png)
 # 📊 Final Features
 
 ```
