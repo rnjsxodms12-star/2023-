@@ -1,35 +1,106 @@
-# 전력 소비량 예측 모델 개발 실험 로그
+# ⚡ Building Energy Consumption Prediction
 
-## 프로젝트 개요
-
-본 프로젝트는 건물별 전력 소비량 데이터를 기반으로 미래 전력 소비량을 예측하는 모델을 구축하는 것을 목표로 한다.
-
-주어진 데이터는 다음과 같이 구성된다.
-
-* 건물별 전력 소비 데이터
-* 기상 데이터 (기온, 풍속, 습도 등)
-* 건물 정보 데이터 (연면적, 건물 유형 등)
-
-모델은 **XGBoost 기반 회귀 모델**을 사용하였으며,
-실험 과정에서 다양한 Feature Engineering 및 데이터 정제 기법을 단계적으로 적용하였다.
-
-평가지표는 **SMAPE**를 사용하였다.
+건물별 전력 소비량 데이터를 활용하여 미래 전력 사용량을 예측하는 머신러닝 모델을 구축하였다.
+본 프로젝트는 **Feature Engineering 중심의 실험 로그 기반 모델 개선 과정**을 기록한다.
 
 ---
 
-# 실험 로그
+# 📊 Problem Description
+
+건물의 전력 소비량은 다음 요소에 의해 크게 영향을 받는다.
+
+* 기온 / 습도 / 풍속
+* 건물 유형
+* 시간대
+* 주말 여부
+* 냉방 수요
+
+본 프로젝트의 목표는 이러한 정보를 활용하여 **건물별 전력 소비량(kWh)** 을 예측하는 것이다.
+
+---
+
+# 📦 Dataset
+
+### Train
+
+* 기간: **2022-06-01 ~ 2022-08-24**
+* 건물 수: **100개**
+* Target: **전력소비량(kWh)**
+
+### Feature Categories
+
+| 종류       | Feature                |
+| -------- | ---------------------- |
+| Weather  | 기온, 풍속, 습도, 강수량        |
+| Time     | month, hour, dayofweek |
+| Building | 건물유형, 연면적, 냉방면적        |
+| Energy   | 태양광용량, ESS용량           |
+| Derived  | DI, AT                 |
+
+---
+
+# 📈 Evaluation Metric
+
+SMAPE
+
+```
+SMAPE = 100/n * Σ |y - ŷ| / ((|y| + |ŷ|)/2)
+```
+
+---
+
+# 🧠 Model
+
+```
+XGBoost Regressor
+```
+
+주요 설정
+
+```
+enable_categorical = True
+n_jobs = -1
+```
+
+---
+
+# ⚙️ Pipeline Overview
+
+```
+Data Loading
+      │
+      ▼
+Missing Value Processing
+      │
+      ▼
+Feature Engineering
+      │
+      ▼
+Building Metadata Merge
+      │
+      ▼
+Building Pattern Clustering
+      │
+      ▼
+Train / Validation Split
+(Time-based)
+      │
+      ▼
+XGBoost Training
+      │
+      ▼
+Prediction
+```
+
+---
+
+# 🔬 Experiment Log
 
 ## Baseline
 
 ### base.ipynb
 
-가장 처음 구축한 파이프라인.
-
-**Score**
-
-| pub  | pri  | val |
-| ---- | ---- | --- |
-| 9.04 | 10.8 | -   |
+초기 파이프라인 구축
 
 **Features**
 
@@ -47,26 +118,27 @@ dayofweek
 is_holiday
 ```
 
+| pub  | pri  |
+| ---- | ---- |
+| 9.04 | 10.8 |
+
 ---
 
-# 1. 파이프라인 안정화
+# 1️⃣ Pipeline Stabilization
 
 ## team_base
 
-**변경사항**
+### Improvements
 
 * 결측치 처리
 
-  * 강수량, 일사, 일조량 → `0`
-  * 풍속, 습도, 기온 → **선형 보간**
-* Validation 방식 개선
+```
+강수량 / 일사 / 일조량 → 0
+풍속 / 습도 / 기온 → 선형 보간
+```
 
-  * **TimeSplit 적용**
-* 평가 방식 통일
-
-  * **SMAPE metric**
-
-**Score**
+* TimeSplit Validation
+* SMAPE Metric 적용
 
 | pub  | pri   | val  |
 | ---- | ----- | ---- |
@@ -76,17 +148,13 @@ is_holiday
 
 ## team_base_n
 
-**변경사항**
+공휴일 정의 수정
 
-* 공휴일 정의 수정
-* 주말 포함한 휴일 변수 생성
-
-```python
-train['is_holiday'] = train['일시'].dt.strftime('%m-%d').isin(['06-06', '08-15']).astype(int)
-train['is_holiday'] = ((train['is_holiday'] == 1) | (train['dayofweek'] >= 5)).astype(int)
 ```
-
-**Score**
+06-06
+08-15
+주말 포함
+```
 
 | pub  | pri   | val  |
 | ---- | ----- | ---- |
@@ -94,311 +162,132 @@ train['is_holiday'] = ((train['is_holiday'] == 1) | (train['dayofweek'] >= 5)).a
 
 ---
 
-# 2. 파생 피처 실험
+# 2️⃣ Feature Engineering
 
-## team_ex1
+## Apparent Temperature (AT)
 
-### 체감온도(Apparent Temperature) 추가
+체감온도 Feature 추가
 
-```python
-def calculate_at(temp, humid, wind):
-    e = (humid / 100) * 6.105 * np.exp(17.27 * temp / (237.7 + temp))
-    return 1.04 * temp + 0.2 * e - 0.65 * wind - 2.7
 ```
-
-**Score**
+AT = 1.04 * temp + 0.2 * vapor_pressure - 0.65 * wind - 2.7
+```
 
 | pub  | pri   | val  |
 | ---- | ----- | ---- |
 | 9.33 | 10.30 | 13.1 |
 
-*Error 발견으로 이후 수정 진행*
-
 ---
 
-## team_ex2
+# 3️⃣ Building Metadata
 
-### 데이터 정합성 수정
+## team_ex4 (Major Improvement)
 
-수정 사항
-
-* test 강수량 0 처리
-* test에 없는 컬럼 강제 생성
-
-  * 일조
-  * 일사
-* test 기상 데이터 선형보간
-* 6월1일 선거일 공휴일 추가
-
-기준 파이프라인을 **team_base_n으로 회귀 후 수정 적용**
-
-**Score**
-
-| pub  | pri   | val   |
-| ---- | ----- | ----- |
-| 9.21 | 10.12 | 12.41 |
-
----
-
-## team_ex3
-
-체감온도만 추가한 실험
-
-**Score**
-
-| pub  | pri   | val   |
-| ---- | ----- | ----- |
-| 9.25 | 10.20 | 12.22 |
-
----
-
-# 3. 건물 정보 Feature 추가
-
-## team_ex4 (첫 성능 돌파 파이프라인)
-
-건물 메타데이터 병합
-
-```python
-train = pd.merge(train, building_info, on='건물번호', how='left')
-test = pd.merge(test, building_info, on='건물번호', how='left')
-```
+건물 정보 Feature 추가
 
 추가 Feature
 
-* 건물유형
-* 연면적
-* 냉방면적
-* 태양광용량
-* ESS저장용량
-* PCS용량
-
-XGBoost 설정
-
 ```
-enable_categorical=True
+건물유형
+연면적
+냉방면적
+태양광용량
+ESS저장용량
+PCS용량
 ```
-
-**Score**
 
 | pub  | pri  | val   |
 | ---- | ---- | ----- |
 | 8.58 | 9.75 | 10.68 |
 
-**첫 baseline 돌파 파이프라인**
+Baseline 돌파
 
 ---
 
-## team_ex5
+# 4️⃣ Time Feature Engineering
 
-team_ex4 + 체감온도(AT)
+## Hour Cyclic Encoding
 
-**Score**
-
-| pub  | pri  | val   |
-| ---- | ---- | ----- |
-| 8.49 | 9.67 | 10.58 |
-
----
-
-## team_ex6
-
-일별 기온 파생 변수 추가
-
-```
-평균기온
-최대기온
-```
-
-**Score**
-
-| pub  | pri  | val   |
-| ---- | ---- | ----- |
-| 8.71 | 9.73 | 10.61 |
-
----
-
-## team_ex7
-
-team_ex3 기반 + 평균기온 / 최대기온
-
-**Score**
-
-| pub  | pri   | val   |
-| ---- | ----- | ----- |
-| 9.65 | 10.73 | 12.18 |
-
-평균기온 / 최대기온은 **정보 중복 가능성 존재**
-
----
-
-# 4. 시간 Feature Engineering
-
-## team_ex8
-
-주말 변수 추가
-
-```python
-is_weekend
-```
-
-Score 변화 없음
-
----
-
-## team_ex9
-
-시간 주기성 추가
+시간 주기성 반영
 
 ```
 hour_sin
 hour_cos
 ```
 
-**Score**
-
-| pub  | pri  | val   |
-| ---- | ---- | ----- |
-| 8.30 | 9.28 | 10.61 |
+| pub  | pri  |
+| ---- | ---- |
+| 8.30 | 9.28 |
 
 ---
 
-# 5. 데이터 정제
+# 5️⃣ Data Cleaning
 
-## team_ex10
+## Closed Day Detection
 
-### 임시 휴무일 데이터 제거
-
-건물별 **일별 총 전력량 / 건물 평소 전력량** 비율 계산
+임시 휴무일 제거
 
 기준
 
 ```
-전력비율 < 0.3
+일별 전력 사용량
+/
+건물 평소 사용량
+< 0.3
 ```
 
-→ 임시 휴무로 판단하여 데이터 제거
-
-**Score**
-
-| pub  | pri  | val   |
-| ---- | ---- | ----- |
-| 8.35 | 9.20 | 10.04 |
+| pub  | pri  |
+| ---- | ---- |
+| 8.35 | 9.20 |
 
 ---
 
-# 6. 건물 성향 분석
+# 6️⃣ Building Behavior Clustering
 
-## team_ex11
+건물 사용 패턴 기반 클러스터링
 
-### 건물 사용 패턴 클러스터링
-
-사용 Feature
-
-* 평균 전력 사용량
-* 기온-전력 상관관계
-* 주말/주중 사용 패턴
-
-클러스터링
+Feature
 
 ```
-KMeans (n_clusters=4)
+평균 전력 사용량
+기온-전력 상관관계
+주말 사용 패턴
 ```
 
-**Score**
+```
+KMeans Clustering
+```
 
-| pub  | pri  | val  |
-| ---- | ---- | ---- |
-| 8.45 | 9.38 | 9.99 |
+| clusters | pub      | pri      |
+| -------- | -------- | -------- |
+| 4        | 8.45     | 9.38     |
+| **5**    | **8.20** | **8.91** |
+| 6        | 8.36     | 9.11     |
+
+Best → **5 clusters**
 
 ---
 
-## team_ex13
+# 7️⃣ Feature Selection
 
-클러스터 수 변경
+### Remove day feature
 
-```
-n_clusters = 5
-```
+트리 모델 과적합 방지
 
-**Score**
-
-| pub  | pri  | val  |
-| ---- | ---- | ---- |
-| 8.20 | 8.91 | 9.88 |
+| pub      | pri      | val      |
+| -------- | -------- | -------- |
+| **7.99** | **8.46** | **9.17** |
 
 ---
 
-## team_ex14
+# 🏆 Final Score
 
-클러스터 수 변경
-
-```
-n_clusters = 6
-```
-
-**Score**
-
-| pub  | pri  | val  |
-| ---- | ---- | ---- |
-| 8.36 | 9.11 | 9.98 |
-
-**최적 클러스터 수 → 5**
+| Public   | Private  | Validation |
+| -------- | -------- | ---------- |
+| **7.99** | **8.46** | **9.17**   |
 
 ---
 
-# 7. Feature 정리
-
-## team_ex15
-
-`day` feature 제거
-
-이유
-
-* 트리 모델에서 과적합 발생
-* 날짜 자체는 의미 없는 노이즈 가능성
-
-**Score**
-
-| pub  | pri  | val  |
-| ---- | ---- | ---- |
-| 7.99 | 8.46 | 9.17 |
-
-현재 **Best Score**
-
----
-
-## team_ex16
-
-`hour` feature 제거
-
-**Score**
-
-| pub  | pri  | val  |
-| ---- | ---- | ---- |
-| 8.25 | 8.73 | 9.23 |
-
----
-
-## team_ex17
-
-카테고리 처리 강화
-
-```python
-train['건물번호'] = train['건물번호'].astype('category')
-train['건물유형'] = train['건물유형'].astype('category')
-```
-
-XGBoost
-
-```
-enable_categorical=True
-```
-
----
-
-# 최종 파이프라인 특징
-
-주요 Feature
+# 📊 Final Features
 
 ```
 건물번호
@@ -428,30 +317,23 @@ building_cluster
 
 ---
 
-# Best Result
+# 🔮 Future Work
 
-| pub      | pri      | val      |
-| -------- | -------- | -------- |
-| **7.99** | **8.46** | **9.17** |
+추가 개선 방향
 
----
-
-# 향후 개선 방향
-
-* 건물별 모델 분리 (Building-wise modeling)
-* 클러스터 기반 모델 학습
-* Lag Feature 추가
-* Temperature Interaction Feature
+* Lag Feature
+* Building-wise model
+* Cluster-based model
 * Hyperparameter tuning
+* Temperature interaction features
 
 ---
 
-# 참고
+# 📌 References
 
-Feature importance 확인
+Feature Importance 확인
 
-```python
+```
 model.feature_importances_
 xgb.plot_importance(model)
 ```
-
