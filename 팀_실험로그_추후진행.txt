@@ -222,13 +222,13 @@ kmeans = KMeans(n_clusters=6, random_state=42, n_init=10)
 
 ------------- team_ex13에서 클러스터 5 기준으로 진행-------
 
-team_ex15 = pub ?.??, pri ?.??, val 9.17
+team_ex15 = pub 7.99, pri 8.46, val 9.17
 team_ex13에서 피쳐 부분의  'day' 제거
 -> day 피쳐는 노이즈 였고, xgb는 트리라 과적합 상태였던 거로 추정 됨
 
 --- 클러스터 = 5 유지---
 
-team_ex16 = pub ?.??, pri ?.??, val 9.23
+team_ex16 = pub 8.25 pri 8.73 val 9.23
 hour 제거
 
 
