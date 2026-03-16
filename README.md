@@ -305,6 +305,7 @@ Best → **5 clusters**
 
 ![hour](eda_hour_pattern.png)
 
+---
 
 # 📊 Final Features
 
