@@ -228,7 +228,8 @@ team_ex13에서 피쳐 부분의  'day' 제거
 
 --- 클러스터 = 5 유지---
 
-team_ex16 = hour 제거
+team_ex16 = pub ?.??, pri ?.??, val 9.23
+hour 제거
 
 
 team_ex17 = 
