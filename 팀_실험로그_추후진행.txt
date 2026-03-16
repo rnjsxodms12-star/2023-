@@ -224,6 +224,7 @@ kmeans = KMeans(n_clusters=6, random_state=42, n_init=10)
 
 team_ex15 = pub ?.??, pri ?.??, val 9.17
 team_ex13에서 피쳐 부분의  'day' 제거
+-> day 피쳐는 노이즈 였고, xgb는 트리라 과적합 상태였던 거로 추정 됨
 
 
 
