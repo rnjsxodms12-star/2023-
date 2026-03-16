@@ -152,8 +152,65 @@ print(f"✨ 임시 휴무 Drop 후 Train 크기: {train.shape}")
 
 ---약속된 공통사항이 끝나는 시점---
 
+team_ex11 = pub 8.45, pri 9.38, val  9.99
+건물 성향 클러스터링
 
-team_ex? = + + + + + + + + + 
+# =========================================================================
+# [추가] team_ex11: 건물별 전력 사용 패턴 기반 클러스터링 (성향 분석)
+# =========================================================================
+from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
+
+print("🧬 건물의 유전자(사용 패턴) 분석 중...")
+
+# 1. 건물별 특징(Feature) 추출용 데이터프레임 생성
+building_profiles = []
+
+for b_num in train['건물번호'].unique():
+    b_data = train[train['건물번호'] == b_num]
+    
+    # 성향 A: 건물 체급 (평균 사용량)
+    mean_p = b_data['전력소비량(kWh)'].mean()
+    
+    # 성향 B: 냉방 민감도 (기온과 전력량의 상관관계)
+    temp_corr = b_data[['전력소비량(kWh)', '기온(C)']].corr().iloc[0, 1]
+    
+    # 성향 C: 운영 패턴 (주말/주중 전력 사용 비율)
+    # 0에 가까우면 주말에 완전히 쉬는 건물, 1에 가까우면 24시간 풀가동 건물
+    weekday_p = b_data[b_data['dayofweek'] < 5]['전력소비량(kWh)'].mean()
+    weekend_p = b_data[b_data['dayofweek'] >= 5]['전력소비량(kWh)'].mean()
+    op_pattern = weekend_p / (weekday_p + 1e-6)
+    
+    building_profiles.append([b_num, mean_p, temp_corr, op_pattern])
+
+df_profiles = pd.DataFrame(building_profiles, columns=['건물번호', 'mean_p', 'temp_corr', 'op_pattern'])
+
+# 2. 클러스터링 (K-Means) 실행
+# 특징들의 단위가 다르므로 스케일링 필수!
+scaler = StandardScaler()
+features_scaled = scaler.fit_transform(df_profiles[['mean_p', 'temp_corr', 'op_pattern']])
+
+# 4개 그룹으로 분류 (건물 유형이 다양하므로 4~6개가 적당합니다)
+kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+df_profiles['building_cluster'] = kmeans.fit_predict(features_scaled)
+
+# 3. 원본 데이터(train, test)에 클러스터 정보 합치기
+train = pd.merge(train, df_profiles[['건물번호', 'building_cluster']], on='건물번호', how='left')
+test = pd.merge(test, df_profiles[['건물번호', 'building_cluster']], on='건물번호', how='left')
+
+# 카테고리 형으로 변환 (XGBoost가 범주형으로 인식하도록)
+train['building_cluster'] = train['building_cluster'].astype('category')
+test['building_cluster'] = test['building_cluster'].astype('category')
+
+print(f"✅ 클러스터링 완료! 분류 현황:\n{df_profiles['building_cluster'].value_counts().sort_index()}")
+# =========================================================================
+'building_cluster'
+
+
+------------------------미정----------------------------
+
+
+team_ex? = + + + + + + + + +  -> 방향과 맞지 않음. 폐기.
 기존 건물 데이터를 (건물번호,평균전력) 데이터를 조사해서 
 4~5가지로 분류 시킨 후,
 건물 별로 하나하나 수동으로.
