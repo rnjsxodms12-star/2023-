@@ -177,7 +177,37 @@ Fold 5 SMAPE: 7.5493
 🏁 제출 파일(team_ex11.csv)이 생성되었습니다!
 
 
+team_ex12 = X
 
+team_ex13 
+
+✅ 데이터 준비 완료! (Train: (203904, 24), Test: (16800, 24))
+🚀 TimeSeriesSplit 교차 검증 시작...
+Fold 1 SMAPE: 11.7266
+Fold 2 SMAPE: 13.6837
+Fold 3 SMAPE: 7.9193
+Fold 4 SMAPE: 8.4341
+Fold 5 SMAPE: 7.6609
+
+✨ 교차 검증 완료! 평균 Val SMAPE: 9.8849
+🏁 제출 파일(team_ex13.csv)이 생성되었습니다!
+
+
+team_ex14
+
+✅ 데이터 준비 완료! (Train: (203904, 24), Test: (16800, 24))
+🚀 TimeSeriesSplit 교차 검증 시작...
+Fold 1 SMAPE: 12.0527
+Fold 2 SMAPE: 13.5899
+Fold 3 SMAPE: 8.0563
+Fold 4 SMAPE: 8.4905
+Fold 5 SMAPE: 7.7261
+
+✨ 교차 검증 완료! 평균 Val SMAPE: 9.9831
+🏁 제출 파일(team_ex14.csv)이 생성되었습니다!
+
+
+team_ex15
 
 
 
