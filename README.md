@@ -289,7 +289,7 @@ Best → **5 clusters**
 **Best performing pipeline: `team_ex15`**
 ## 📈 Performance Trend
 
-![Experiment Score Progression](./score_progression.png)
+![Experiment Score Progression](/score_progression.png)
 
 - 건물 메타데이터 활용: 건물 정보(연면적, 유형 등) 피처 추가가 전체 과정 중 가장 큰 폭의 성능 개선을 이끌어냈습니다.
 
