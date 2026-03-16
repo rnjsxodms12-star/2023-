@@ -291,7 +291,7 @@ Best → **5 clusters**
 
 ![Experiment Score Progression](./score_progression.png)
 
-# Exploratory Data Analysis
+# 🔍 Exploratory Data Analysis
 
 ## Power Distribution
 
