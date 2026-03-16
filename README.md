@@ -289,6 +289,22 @@ Best → **5 clusters**
 ## 📈 Performance Trend
 
 ![Experiment Score Progression](./score_progression.png)
+
+# Exploratory Data Analysis
+
+## Power Distribution
+
+![dist](eda_power_distribution.png)
+
+## Temperature vs Power
+
+![temp](eda_temp_power.png)
+
+## Hourly Pattern
+
+![hour](eda_hour_pattern.png)
+
+
 # 📊 Final Features
 
 ```
