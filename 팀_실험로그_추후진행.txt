@@ -228,7 +228,17 @@ team_ex13에서 피쳐 부분의  'day' 제거
 
 --- 클러스터 = 5 유지---
 
+team_ex16 = hour 제거
 
+
+team_ex17 = 
+model 정의 부분에 enable_categorical=True 이미 있음 -> category 처리
+ 
+train['건물번호'] = train['건물번호'].astype('category')
+test['건물번호'] = test['건물번호'].astype('category')
+
+train['건물유형'] = train['건물유형'].astype('category')
+test['건물유형'] = test['건물유형'].astype('category')
 
 
 ------------------------미정----------------------------
