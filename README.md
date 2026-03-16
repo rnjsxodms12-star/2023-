@@ -1,7 +1,8 @@
 # ⚡ Building Energy Consumption Prediction
 
 건물별 전력 소비량 데이터를 활용하여 미래 전력 사용량을 예측하는 머신러닝 모델을 구축하였다.
-본 프로젝트는 **Feature Engineering 중심의 실험 로그 기반 모델 개선 과정**을 기록한다.
+
+본 프로젝트는 **Feature Engineering 중심의 실험 기반 모델 개선 과정**을 기록한 프로젝트이다.
 
 ---
 
